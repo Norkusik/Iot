@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - 8090:8090
+
+  db:
+    build:
+      context: ./
+      dockerfile: Dockerfile-mysql
+    ports:
+      - 25432:5432
+    volumes:
+     - /var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: dom-mysql
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+
+  phpmyadmin:
+    build:
+      context: ./
+      dockerfile: Dockerfile-phpmyadmin
+    ports:
+     - 8080:80
+    environment:
+      MYSQL_USERNAME: root
+      MYSQL_ROOT_PASSWORD: password
+      PMA_HOST: dom-mysql
